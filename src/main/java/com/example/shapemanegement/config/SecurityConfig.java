@@ -1,5 +1,6 @@
 package com.example.shapemanegement.config;
 
+import com.example.shapemanegement.filter.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -33,11 +35,14 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> authorize
                         // Allow GET /api/shapes and /api/shapes/{id} without authentication (for drawing board visibility)
-                        .requestMatchers("/api/**", "/api/shapes/{id:\\d+}").permitAll() // Regex for ID to not catch /overlaps
+                        .requestMatchers("/api/auth/**", "/api/shapes/{id:\\d+}").permitAll() // Regex for ID to not catch /overlaps
                         // All other /api/shapes endpoints require authentication
                         .requestMatchers("/api/shapes/**").authenticated()
                         .anyRequest().authenticated() // All other requests not matched above require authentication
                 )
+                .addFilterBefore(new JwtFilter(), UsernamePasswordAuthenticationFilter.class)
+
+
                 .httpBasic(Customizer.withDefaults()); // Enable HTTP Basic authentication
         return http.build();
     }
