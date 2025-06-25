@@ -55,12 +55,12 @@ public class ShapeController {
         return ResponseEntity.noContent().build();
     }
 
-    // TODO: Overlap detection endpoint - uncomment and implement later
-    /*
+
+
     @GetMapping("/overlaps") // Example endpoint for getting overlapping IDs
     public ResponseEntity<List<Long>> getOverlappingShapeIds() {
         List<Long> overlappingIds = shapeService.findOverlappingShapeIds();
         return ResponseEntity.ok(overlappingIds);
     }
-    */
+
 }

@@ -17,5 +17,5 @@ public interface IShapeService {
     void deleteShape(Long id);
 
     // TODO: Add the method signature for overlap detection here later
-    // List<Long> findOverlappingShapeIds();
+     List<Long> findOverlappingShapeIds();
 }
