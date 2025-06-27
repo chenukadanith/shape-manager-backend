@@ -42,14 +42,14 @@ public class ShapeController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')") // Requires ADMIN role for update
+
     public ResponseEntity<ShapeResponseDto> updateShape(@PathVariable Long id, @Valid @RequestBody ShapeRequestDto shapeDto) {
         ShapeResponseDto updatedShape = shapeService.updateShape(id, shapeDto);
         return ResponseEntity.ok(updatedShape);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')") // Requires ADMIN role for delete
+
     public ResponseEntity<Void> deleteShape(@PathVariable Long id) {
         shapeService.deleteShape(id);
         return ResponseEntity.noContent().build();

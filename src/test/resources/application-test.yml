@@ -11,3 +11,6 @@ spring:
   h2:
     console:
       enabled: true
+
+  security:
+    enabled: false
