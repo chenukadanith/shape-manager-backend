@@ -1,5 +1,6 @@
 package com.example.shapemanegement.entity;
 
+import com.example.shapemanegement.converter.StringToJsonConverter;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,7 @@ public class Shape {
 
 
     @Column(name = "coordinates", columnDefinition = "JSON")
+    @Convert(converter = StringToJsonConverter.class)
     private String coordinates;
 
     // For circles
