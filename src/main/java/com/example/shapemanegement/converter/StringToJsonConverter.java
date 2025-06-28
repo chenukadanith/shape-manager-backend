@@ -7,12 +7,12 @@ import org.springframework.data.repository.query.Param;
 public class StringToJsonConverter implements AttributeConverter<String,String> {
     @Override
     public String convertToDatabaseColumn(String attribute) {
+        //nullable check
         if (attribute == null) {
             return null;
         }
-        // Escape any existing double quotes within the string to prevent JSON parsing issues
         String escapedAttribute = attribute.replace("\"", "\\\"");
-        // Wrap the entire string in double quotes to make it a valid JSON string literal
+
         return "\"" + escapedAttribute + "\"";
     }
 
@@ -23,7 +23,7 @@ public class StringToJsonConverter implements AttributeConverter<String,String> 
         }
         // Check if the string starts and ends with a quote, indicating it was stored as a JSON string literal
         if (dbData.length() >= 2 && dbData.startsWith("\"") && dbData.endsWith("\"")) {
-            // Remove the outer quotes
+
             dbData = dbData.substring(1, dbData.length() - 1);
         }
         // Unescape any escaped double quotes within the string

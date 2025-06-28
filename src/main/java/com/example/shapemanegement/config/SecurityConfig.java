@@ -25,34 +25,33 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity // Enables @PreAuthorize on controller methods
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        //cors configuration
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> authorize
-                        // Allow GET /api/shapes and /api/shapes/{id} without authentication (for drawing board visibility)
                         .requestMatchers("/api/auth/**", "/api/shapes/{id:\\d+}").permitAll() // Regex for ID to not catch /overlaps
-                        // All other /api/shapes endpoints require authentication
                         .requestMatchers("/api/shapes/**").authenticated()
                         .anyRequest().authenticated() // All other requests not matched above require authentication
                 )
                 .addFilterBefore(new JwtFilter(), UsernamePasswordAuthenticationFilter.class)
 
 
-                .httpBasic(Customizer.withDefaults()); // Enable HTTP Basic authentication
+                .httpBasic(Customizer.withDefaults());
         return http.build();
     }
 
-    // In-memory user for demonstration/testing
+    //noob user for developement
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails admin = User.builder()
                 .username("admin")
-                .password("{noop}password") // {noop} is for development, DO NOT use in production
+                .password("{noop}password")
                 .roles("ADMIN")
                 .build();
         return new InMemoryUserDetailsManager(admin);
@@ -68,13 +67,13 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173")); // Your React app's URL
+        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/**", configuration); // Apply to all /api endpoints
+        source.registerCorsConfiguration("/api/**", configuration);
         return source;
     }
 }

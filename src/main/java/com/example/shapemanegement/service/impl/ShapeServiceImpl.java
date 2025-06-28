@@ -28,7 +28,7 @@ public class ShapeServiceImpl implements IShapeService {
         this.shapeRepository = shapeRepository;
     }
 
-    // --- Utility for Coordinate Validation ---
+    // Utility for Coordinate Validation
     private void validateCoordinates(String type, String coordinates, Double centerX, Double centerY, Double radius) {
         if ("circle".equalsIgnoreCase(type)) {
             if (centerX == null || centerY == null || radius == null) {
@@ -117,7 +117,7 @@ public class ShapeServiceImpl implements IShapeService {
         shapeRepository.deleteById(id);
     }
 
-    //  Helper methods for mapping -
+    //  Helper methods for mapping
     private ShapeResponseDto mapToResponseDto(Shape shape) {
         return new ShapeResponseDto(
                 shape.getId(),
@@ -199,11 +199,11 @@ public class ShapeServiceImpl implements IShapeService {
         double[] bounds1 = getBoundingBox(shape1);
         double[] bounds2 = getBoundingBox(shape2);
 
-        // bounds = [minX, minY, maxX, maxY]
-        return !(bounds1[2] < bounds2[0] || // shape1 right < shape2 left
-                bounds2[2] < bounds1[0] || // shape2 right < shape1 left
-                bounds1[3] < bounds2[1] || // shape1 bottom < shape2 top
-                bounds2[3] < bounds1[1]);  // shape2 bottom < shape1 top
+
+        return !(bounds1[2] < bounds2[0] ||
+                bounds2[2] < bounds1[0] ||
+                bounds1[3] < bounds2[1] ||
+                bounds2[3] < bounds1[1]);
     }
 
     private double[] getBoundingBox(Shape shape) {
@@ -230,7 +230,7 @@ public class ShapeServiceImpl implements IShapeService {
         double distance = Math.sqrt(dx * dx + dy * dy);
         double radiusSum = circle1.getRadius() + circle2.getRadius();
 
-        // Overlapping if distance < sum of radii (not just touching)
+
         return distance < radiusSum;
     }
 

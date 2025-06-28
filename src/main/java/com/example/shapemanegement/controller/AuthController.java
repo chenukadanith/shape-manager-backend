@@ -18,10 +18,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+    //constructor injection
     private  UserService userService;
     public AuthController(UserService userService){
         this.userService=userService;
     }
+    //login
     @PostMapping("/login")
     public ResponseEntity<?>  login(@RequestBody AuthDto authDto){
         try {
@@ -46,6 +48,7 @@ public class AuthController {
 
 
     }
+    //register
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody UserDto userDto){
         User user = userService.createUser(userDto);
